@@ -12,7 +12,7 @@ go build -o iis_prometheus_courier main.go
 # How to connect to server
 Enter to url: http://localhost:9121/metrics
 # Use with prometheus
-Edit your file prometheus.ym
+Edit your file prometheus.yml
 ```
 - job_name: 'iis'
     metrics_path: '/metrics'
