@@ -14,14 +14,14 @@ type Href struct {
 	Href string `json:"href"`
 }
 type Links struct {
-	Self Href `json:"self"`
+	Self *Href `json:"self"`
 
 }
 type ApplicationPool struct {
 	Name string `json:"name"`
 	Id string `json:"id"`
 	Status string `json:"status"`
-	Links Links `json:"_links"`
+	Links *Links `json:"_links"`
 }
 type ApplicationPoolResp struct {
 	AppPools []ApplicationPool `json:"app_pools"`
@@ -33,16 +33,16 @@ type CpuApplicationPool struct {
 }
 
 type LinkApplicationPool struct {
-	Monitoring Href `json:"monitoring"`
-	WorkerProcesses Href `json:"worker_processes"`
+	Monitoring *Href `json:"monitoring"`
+	WorkerProcesses *Href `json:"worker_processes"`
 }
 type ApplicationPoolDetailResp struct {
 	Name string `json:"name"`
 	Id string `json:"id"`
 	Status string `json:"status"`
 	QueueLength float64 `json:"queue_length"`
-	Cpu CpuApplicationPool `json:"cpu"`
-	Links LinkApplicationPool `json:"_links"`
+	Cpu *CpuApplicationPool `json:"cpu"`
+	Links *LinkApplicationPool `json:"_links"`
 }
 
 // Path: /api/webserver/application-pools
@@ -86,6 +86,10 @@ func GetApplicationPool(user,pass,addr, token string) (*ApplicationPoolResp, err
 	}
 
 	req, err := http.NewRequest("GET", url, strings.NewReader(""))
+	if err != nil {
+		logrus.WithField("err", err).Error("New request has an error")
+		return nil, err
+	}
 	req.Header.Add("Access-Token", "Bearer "+token)
 	req.Header.Add("Accept", "application/hal+json")
 	req.Header.Add("Connection", "keep-alive")
@@ -111,7 +115,11 @@ func GetApplicationPool(user,pass,addr, token string) (*ApplicationPoolResp, err
 	logrus.Infof("response Status: %v", resp.Status)
 
 	var ap ApplicationPoolResp
-	json.Unmarshal(body, &ap)
+	err = json.Unmarshal(body, &ap)
+	if err != nil {
+		logrus.WithField("err", err).Error("Unmarshal response has an error")
+		return nil, err
+	}
 	return &ap, nil
 }
 // Path: /api/webserver/application-pools/HxxfhsjqAbqPv_JvPwV-cw
@@ -215,6 +223,10 @@ func GetApplicationPoolDetail(appPool ApplicationPool, user,pass,addr, token str
 	}
 
 	req, err := http.NewRequest("GET", url, strings.NewReader(""))
+	if err != nil {
+		logrus.WithField("err", err).Error("New request has an error")
+		return nil, err
+	}
 	req.Header.Add("Access-Token", "Bearer "+token)
 	req.Header.Add("Accept", "application/hal+json")
 	req.Header.Add("Connection", "keep-alive")
@@ -240,6 +252,10 @@ func GetApplicationPoolDetail(appPool ApplicationPool, user,pass,addr, token str
 	logrus.Infof("response Status: %v", resp.Status)
 
 	var ap ApplicationPoolDetailResp
-	json.Unmarshal(body, &ap)
+	err = json.Unmarshal(body, &ap)
+	if err != nil {
+		logrus.WithField("err", err).Error("Unmarshal response has an error")
+		return nil, err
+	}
 	return &ap, nil
 }

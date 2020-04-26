@@ -50,6 +50,10 @@ func GetHttpRequestMetrics(user,pass,addr, token string)  (*HttpRequestMetricsRe
 	}
 
 	req, err := http.NewRequest("GET", url, strings.NewReader(""))
+	if err != nil {
+		logrus.WithField("err", err).Error("New request has an error")
+		return nil, err
+	}
 	req.Header.Add("Access-Token", "Bearer "+token)
 	req.Header.Add("Accept", "application/hal+json")
 	req.Header.Add("Connection", "keep-alive")
@@ -75,7 +79,11 @@ func GetHttpRequestMetrics(user,pass,addr, token string)  (*HttpRequestMetricsRe
 	logrus.Infof("response Status: %v", resp.Status)
 
 	var ap HttpRequestMetricsRes
-	json.Unmarshal(body, &ap)
+	err = json.Unmarshal(body, &ap)
+	if err != nil {
+		logrus.WithField("err", err).Error("Unmarshal response has an error")
+		return nil, err
+	}
 	return &ap, nil
 }
 

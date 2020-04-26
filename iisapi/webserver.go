@@ -84,6 +84,10 @@ func GetMetrics(path, user,pass,addr, token string) (*IISMetrics, error) {
 	}
 
 	req, err := http.NewRequest("GET", url, strings.NewReader(""))
+	if err != nil {
+		logrus.WithField("err", err).Error("New request has an error")
+		return nil, err
+	}
 	req.Header.Add("Access-Token", "Bearer "+token)
 	req.Header.Add("Accept", "application/hal+json")
 	req.Header.Add("Connection", "keep-alive")
@@ -112,7 +116,11 @@ func GetMetrics(path, user,pass,addr, token string) (*IISMetrics, error) {
 	//logrus.Infof("Unquote response Body:%v", s)
 
 	var iisMetrics IISMetrics
-	json.Unmarshal(body, &iisMetrics)
+	err = json.Unmarshal(body, &iisMetrics)
+	if err != nil {
+		logrus.WithField("err", err).Error("Unmarshal response has an error")
+		return nil, err
+	}
 	iisMetrics.Addr = addr
 	return &iisMetrics, nil
 }
