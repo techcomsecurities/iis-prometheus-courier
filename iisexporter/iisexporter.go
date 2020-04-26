@@ -76,62 +76,62 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 func extractMetrics(iisMetrics *iisapi.IISMetrics, scrapes chan<- scrapeResult) {
 	logrus.Infof("Begin extract metrics from AppName:%s", iisMetrics.AppName)
 	if iisMetrics.HttpRequestMetrics != nil {
-		index := "HttpRequest"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_http_request", Addr: iisMetrics.HttpRequestMetrics.Url, Index: index, Value: iisMetrics.HttpRequestMetrics.TimeElapsed}
+		groupName := "HttpRequest"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.HttpRequestMetrics.Url, Index: "http_request", Value: iisMetrics.HttpRequestMetrics.TimeElapsed}
 	}else if iisMetrics.Network != nil {
 		// Network
-		index := "Network"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_bytes_sent_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.BytesSentSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_bytes_recv_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.BytesRecvSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_connection_attempts_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.ConnectionAttemptsSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total_bytes_sent", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.TotalBytesSent}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total_bytes_recv", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.TotalBytesRecv}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total_connection_attempts", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.TotalConnectionAttempts}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_current_connections", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Network.CurrentConnections}
+		groupName := "Network"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName, Addr: iisMetrics.Addr, Index: "bytes_sent_sec", Value: iisMetrics.Network.BytesSentSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName, Addr: iisMetrics.Addr, Index: "bytes_recv_sec", Value: iisMetrics.Network.BytesRecvSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "connection_attempts_sec", Value: iisMetrics.Network.ConnectionAttemptsSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total_bytes_sent", Value: iisMetrics.Network.TotalBytesSent}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total_bytes_recv", Value: iisMetrics.Network.TotalBytesRecv}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total_connection_attempts", Value: iisMetrics.Network.TotalConnectionAttempts}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "current_connections", Value: iisMetrics.Network.CurrentConnections}
 	} else {
 
 		// Requests
-		index := "Requests"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_active", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Requests.Active}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_per_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Requests.PerSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Requests.Total}
+		groupName := "Requests"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "active", Value: iisMetrics.Requests.Active}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "per_sec", Value: iisMetrics.Requests.PerSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total", Value: iisMetrics.Requests.Total}
 
 		// Memory
-		index = "Memory"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_handles", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Memory.Handles}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_private_bytes", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Memory.PrivateBytes}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_private_working_set", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Memory.PrivateWorkingSet}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_system_in_use", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Memory.SystemInUse}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_installed", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Memory.Installed}
+		groupName = "Memory"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "handles", Value: iisMetrics.Memory.Handles}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "private_bytes", Value: iisMetrics.Memory.PrivateBytes}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "private_working_set", Value: iisMetrics.Memory.PrivateWorkingSet}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "system_in_use", Value: iisMetrics.Memory.SystemInUse}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "installed", Value: iisMetrics.Memory.Installed}
 
 		// Cpu
-		index = "Cpu"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_threads", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cpu.Threads}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_processes", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cpu.Processes}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_percent_usage", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cpu.PercentUsage}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_system_percent_usage", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cpu.SystemPercentUsage}
+		groupName = "Cpu"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "threads", Value: iisMetrics.Cpu.Threads}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "processes", Value: iisMetrics.Cpu.Processes}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "percent_usage", Value: iisMetrics.Cpu.PercentUsage}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "system_percent_usage", Value: iisMetrics.Cpu.SystemPercentUsage}
 
 		// Disk
-		index = "Disk"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_io_write_operations_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Disk.IoWriteOperationsSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_io_read_operations_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Disk.IoReadOperationsSec}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_page_faults_sec", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Disk.PageFaultsSec}
+		groupName = "Disk"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "io_write_operations_sec", Value: iisMetrics.Disk.IoWriteOperationsSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "io_read_operations_sec", Value: iisMetrics.Disk.IoReadOperationsSec}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "page_faults_sec", Value: iisMetrics.Disk.PageFaultsSec}
 
 		// Cache
-		index = "Cache"
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_file_cache_count", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.FileCacheCount}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_file_cache_memory_usage", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.FileCacheMemoryUsage}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_file_cache_hits", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.FileCacheHits}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_file_cache_misses", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.FileCacheMisses}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total_files_cached", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.TotalFilesCached}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_output_cache_count", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.OutputCacheCount}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_output_cache_memory_usage", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.OutputCacheMemoryUsage}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_output_cache_hits", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.OutputCacheHits}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_output_cache_misses", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.OutputCacheMisses}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_uri_cache_count", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.UriCacheCount}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_uri_cache_hits", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.UriCacheHits}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_uri_cache_misses", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.UriCacheMisses}
-		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: iisMetrics.AppName+"_total_uris_cached", Addr: iisMetrics.Addr, Index: index, Value: iisMetrics.Cache.TotalUrisCached}
+		groupName = "Cache"
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "file_cache_count", Value: iisMetrics.Cache.FileCacheCount}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "file_cache_memory_usage", Value: iisMetrics.Cache.FileCacheMemoryUsage}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "file_cache_hits", Value: iisMetrics.Cache.FileCacheHits}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "file_cache_misses", Value: iisMetrics.Cache.FileCacheMisses}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total_files_cached", Value: iisMetrics.Cache.TotalFilesCached}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "output_cache_count", Value: iisMetrics.Cache.OutputCacheCount}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "output_cache_memory_usage", Value: iisMetrics.Cache.OutputCacheMemoryUsage}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "output_cache_hits", Value: iisMetrics.Cache.OutputCacheHits}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "output_cache_misses", Value: iisMetrics.Cache.OutputCacheMisses}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "uri_cache_count", Value: iisMetrics.Cache.UriCacheCount}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "uri_cache_hits", Value: iisMetrics.Cache.UriCacheHits}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "uri_cache_misses", Value: iisMetrics.Cache.UriCacheMisses}
+		scrapes <- scrapeResult{Service:iisMetrics.AppName,Name: groupName , Addr: iisMetrics.Addr, Index: "total_uris_cached", Value: iisMetrics.Cache.TotalUrisCached}
 	}
 	logrus.Infof("End extract metrics from AppName:%s", iisMetrics.AppName)
 }
@@ -257,7 +257,7 @@ func NewIISExporter(user, pass string, addrs, tokens []string, namespace string)
 		totalScrapes: prometheus.NewCounter(prometheus.CounterOpts{
 			Namespace: namespace,
 			Name:      "exporter_scrapes_total",
-			Help:      "Current total redis scrapes.",
+			Help:      "Current total iis scrapes.",
 		}),
 
 		duration: prometheus.NewGauge(prometheus.GaugeOpts{
