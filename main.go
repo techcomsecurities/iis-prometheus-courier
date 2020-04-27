@@ -14,7 +14,7 @@ var (
 	user     = flag.String("user", "sangnv", "User name")
 	pass     = flag.String("pass", "Tcbs123", "Password")
 	iisAddr     = flag.String("addr", "https://10.7.2.4:55539", "Address of one or more iis nodes, comma separated")
-	token     = flag.String("token", "gYke24iXNg8JmNR_SbsLmWgfVef-SnqLqhIOZdv8F8qaTXW0gNCg9g", "Token of one or more iis nodes, comma separated")
+	token     = flag.String("token", "Kqr8MiKWkbJ_MwEwNKktVJl-4Vod-f9uxTL1bZVaR0nwf5F8Qp0Y5g", "Token of one or more iis nodes, comma separated")
 	namespace     = flag.String("namespace", "iis", "Namespace for metrics")
 	port = flag.String("port", ":9121", "Address to listen on for web interface and telemetry.")
 )
