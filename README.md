@@ -228,3 +228,4 @@ promhttp_metric_handler_requests_total{code="200"} 0
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
 ```
+![Screenshot](https://github.com/techcomsecurities/iis-prometheus-courier/blob/develop/Screenshot%20from%202020-04-27%2019-53-12.png)
