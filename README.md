@@ -1,5 +1,7 @@
 # iis-prometheus-courier
-Microsoft IIS administration APs export to prometheus
+Microsoft IIS administration APIs export to prometheus.
+
+More detail about IIS administration APIs at here https://docs.microsoft.com/en-us/iis-administration/api/monitoring
 # How to run
 ```
 go run main.go --user=your user name --pass=your pass word --addr=https://your ip:55539 --token=your token
